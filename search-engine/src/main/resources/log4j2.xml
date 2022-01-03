@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+    <Properties>
+        <Property name="LOG_PATTERN">%d{HH:mm:ss.SSS} [%t] %-5level - %msg%ex%n</Property>
+    </Properties>
+
+    <Appenders>
+        <!-- console appender -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout disableAnsi="false" pattern="%highlight{${LOG_PATTERN}}"/>
+        </Console>
+
+        <!-- file appenders -->
+        <File name="general-appender" fileName="logs/all.log" append="false">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </File>
+        <File name="my-appender" fileName="logs/search-engine.log" append="false">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </File>
+
+    </Appenders>
+
+    <Loggers>
+        <Root level="all">
+            <AppenderRef ref="Console" level="warn"/>
+            <AppenderRef ref="general-appender"/>
+        </Root>
+        <Logger name="my-logger">
+            <AppenderRef ref="my-appender"/>
+        </Logger>
+    </Loggers>
+
+</Configuration>
