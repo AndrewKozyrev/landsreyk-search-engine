@@ -1,0 +1,27 @@
+server:
+  port: ${PORT:8080}
+spring:
+  datasource:
+    url: jdbc:${CLEARDB_DATABASE_URL:mysql://localhost:3306/search_engine}
+    username: landsreyk
+    password: 12345678
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 20
+        generate_statistics: true
+        order_inserts: true
+        order_updates: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+sites:
+  - url: https://www.playback.ru
+    name: PlayBack.ru
+  - url: https://www.lenta.ru
+    name: Лента.ру
+  - url: https://www.skillbox.ru
+    name: Skillbox
+user-agent: LandsreykSearchBot/1.0 (+http://www.google.com/bot.html)
+referrer: http://www.google.com
+web-interface: /admin
