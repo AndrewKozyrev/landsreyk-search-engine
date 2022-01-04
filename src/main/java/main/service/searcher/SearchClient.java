@@ -243,7 +243,7 @@ public class SearchClient {
     }
     if (!sites.stream().allMatch(x -> x.getStatus().equals(Status.INDEXED)))
     {
-      return ResponseEntity.status(500).body(Map.of("result", false,
+      return ResponseEntity.status(409).body(Map.of("result", false,
           "error", "Не все сайты проиндексированы."));
     }
     List<MatchedPage> searchResults = new ArrayList<>();
