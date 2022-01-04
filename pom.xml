@@ -78,39 +78,18 @@
         </dependency>
         <dependency>
             <groupId>org.apache.lucene.morphology</groupId>
-            <artifactId>morphology</artifactId>
+            <artifactId>english</artifactId>
             <version>1.5</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/lib/morphology-1.5.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene.morphology</groupId>
             <artifactId>russian</artifactId>
             <version>1.5</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/lib/russian-1.5.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.lucene.morphology</groupId>
-            <artifactId>english</artifactId>
-            <version>1.5</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/lib/english-1.5.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.lucene.morphology</groupId>
-            <artifactId>dictionary-reader</artifactId>
-            <version>1.5</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/lib/dictionary-reader-1.5.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene.morphology</groupId>
             <artifactId>morph</artifactId>
             <version>1.5</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/lib/morph-1.5.jar</systemPath>
         </dependency>
     </dependencies>
-
 </project>
