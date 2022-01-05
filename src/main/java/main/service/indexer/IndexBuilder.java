@@ -41,8 +41,10 @@ public class IndexBuilder {
     private final ThreadPoolExecutor threadPool;
     private LaunchState launchState = LaunchState.IDLE;
 
-    public IndexBuilder(ApplicationProperties properties, SiteRepository siteRepository,
-                        PageRepository pageRepository, WordRepository wordRepository,
+    public IndexBuilder(ApplicationProperties properties,
+                        SiteRepository siteRepository,
+                        PageRepository pageRepository,
+                        WordRepository wordRepository,
                         IndexRepository indexRepository) {
         this.properties = properties;
         this.siteRepository = siteRepository;

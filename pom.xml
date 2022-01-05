@@ -132,5 +132,19 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/morph-1.5.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>org.apache.lucene.morphology</groupId>
+            <artifactId>morphology</artifactId>
+            <version>1.5</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/morphology-1.5.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene.morphology</groupId>
+            <artifactId>dictionary-reader</artifactId>
+            <version>1.5</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/dictionary-reader-1.5.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>

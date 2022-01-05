@@ -13,12 +13,18 @@ import java.util.stream.Collectors;
 
 
 public class WordCounter {
-    static LuceneMorphology russianMorph;
-    static LuceneMorphology englishMorph;
+    public static LuceneMorphology russianMorph;
+    public static LuceneMorphology englishMorph;
 
-    public WordCounter() throws IOException {
-        russianMorph = new RussianLuceneMorphology();
-        englishMorph = new EnglishLuceneMorphology();
+    static {
+        try {
+            russianMorph = new RussianLuceneMorphology();
+            englishMorph = new EnglishLuceneMorphology();
+        } catch (IOException e) {
+            LogUtil.logger.fatal(
+                    "WordCounter can't be instantiated. Exiting main.application, fix your bug.", e);
+            System.exit(2);
+        }
     }
 
     /**
@@ -58,7 +64,7 @@ public class WordCounter {
      * @param text исходный текст
      * @return словарь (key, value) = (словоформа, частота_слова)
      */
-    public Map<String, Integer> getStats(String text) {
+    public static Map<String, Integer> getStats(String text) {
         Collection<String> words = selectWords(text);
         ConcurrentHashMap<Lexeme, Integer> map = new ConcurrentHashMap<>();
         words.parallelStream().forEach(word ->
