@@ -1,0 +1,1 @@
+web: java -jar target/search-engine-4.jar
