@@ -20,7 +20,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.*;
@@ -28,7 +28,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-@Component
+@Service
 public class SearchClient {
 
   private static final int MAX_OCCURANCE_PERCENT = 90;
@@ -63,7 +63,7 @@ public class SearchClient {
    * @param word слово, для поиска
    * @return индекс начала и конца слова в тексте
    */
-  private static int[] getSnippet(String text, String word) {
+  private int[] getSnippet(String text, String word) {
     String token = word;
     if (text.contains(token)) {
       int i = text.indexOf(word);
