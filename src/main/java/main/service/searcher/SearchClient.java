@@ -3,24 +3,20 @@ package main.service.searcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import main.dao.IndexRepository;
 import main.dao.PageRepository;
 import main.dao.SiteRepository;
 import main.dao.WordRepository;
-import main.model.MatchedPage;
-import main.model.Page;
-import main.model.Site;
+import main.model.*;
 import main.model.Site.Status;
-import main.model.Word;
 import main.utilities.Lexeme;
 import main.utilities.LogUtil;
 import main.utilities.WordCounter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,16 +30,17 @@ public class SearchClient {
     private final SiteRepository siteRepository;
     private final PageRepository pageRepository;
     private final WordRepository wordRepository;
-    private final JdbcTemplate jdbcTemplate;
+    private final IndexRepository indexRepository;
 
     public SearchClient(SiteRepository siteRepository,
                         PageRepository pageRepository,
                         WordRepository wordRepository,
-                        JdbcTemplate jdbcTemplate) throws IOException {
+                        IndexRepository indexRepository) {
         this.siteRepository = siteRepository;
         this.pageRepository = pageRepository;
         this.wordRepository = wordRepository;
-        this.jdbcTemplate = jdbcTemplate;;
+        this.indexRepository = indexRepository;
+        ;
     }
 
     /**
@@ -128,18 +125,13 @@ public class SearchClient {
         matchedPage.setSiteName(page.getSite().getName());
         matchedPage.setUrl(page.getUrl());
         Element element = Jsoup.parse(page.getContent()).selectFirst("title");
-        String title = null;
-        if (Objects.nonNull(element)) {
-            title = element.text();
-        }
+        String title = Objects.nonNull(element) ? element.text() : "";
         matchedPage.setTitle(title);
         String content = Jsoup.parse(page.getContent()).text().toLowerCase();
         StringJoiner snippet = new StringJoiner("...", " ... ", "...");
         words.stream()
                 .map(word -> {
-                    String sql = "SELECT `rank` FROM _index WHERE page_id = %s AND lemma_id = %s"
-                            .formatted(page.getId(), word.getId());
-                    float rank = jdbcTemplate.queryForObject(sql, Float.class);
+                    float rank = indexRepository.findByPageAndWord(page, word).getRank();
                     matchedPage.setRelevance(matchedPage.getRelevance() + rank);
                     return word.getName();
                 })
@@ -163,19 +155,18 @@ public class SearchClient {
      * @param words сущности Word
      * @return страницы, содержащие все леммы
      */
-    private Set<Page> mapToPages(List<Word> words, Site site) {
-        HashSet<Page> matchedSet = new HashSet<>(pageRepository.findBySite(site));
+    private Set<Page> mapToPages(List<Word> words) {
+        HashSet<Index> indexSet = new HashSet<>();
         for (Word word : words) {
-            String sql = """
-                    SELECT _page.id FROM _index
-                    JOIN _page ON _page.id = _index.page_id
-                    JOIN _lemma ON _lemma.id = _index.lemma_id
-                    WHERE _lemma.lemma = "%s"
-                    """.formatted(word.getName());
-            List<Integer> list = jdbcTemplate.queryForList(sql, Integer.class);
-            matchedSet.removeIf(y -> !list.contains(y.getId()));
+            List<Index> matchingIndices = indexRepository.findByWord(word);
+            if (indexSet.isEmpty()) {
+                indexSet.addAll(matchingIndices);
+            }
+            else {
+                indexSet.retainAll(matchingIndices);
+            }
         }
-        return matchedSet;
+        return indexSet.parallelStream().map(Index::getPage).collect(Collectors.toSet());
     }
 
     /**
@@ -208,11 +199,12 @@ public class SearchClient {
         if (words.isEmpty()) {
             return Collections.emptyList();
         }
-        Set<Page> pages = mapToPages(words, site);
+        Set<Page> pages = mapToPages(words);
         return mapToMatchedPages(words, pages);
     }
 
     public ResponseEntity<?> search(String searchQuery, String site, int offset, int limit) {
+        LogUtil.logger.info("SearchClient::search");
         List<Site> sites = siteRepository.findAll();
         if (site != null) {
             if (sites.stream().anyMatch(x -> x.getUrl().equals(site))) {
