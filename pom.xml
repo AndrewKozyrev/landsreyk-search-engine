@@ -115,36 +115,26 @@
             <groupId>org.apache.lucene.morphology</groupId>
             <artifactId>russian</artifactId>
             <version>1.5</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/russian-1.5.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene.morphology</groupId>
             <artifactId>english</artifactId>
             <version>1.5</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/english-1.5.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene.morphology</groupId>
             <artifactId>morph</artifactId>
             <version>1.5</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/morph-1.5.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>org.apache.lucene.morphology</groupId>
+            <groupId>org.apache.lucene.analysis</groupId>
             <artifactId>morphology</artifactId>
             <version>1.5</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/morphology-1.5.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene.morphology</groupId>
             <artifactId>dictionary-reader</artifactId>
             <version>1.5</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/dictionary-reader-1.5.jar</systemPath>
         </dependency>
     </dependencies>
 </project>
