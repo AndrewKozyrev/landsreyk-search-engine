@@ -21,9 +21,9 @@
     </properties>
     <repositories>
         <repository>
-            <id>in-project</id>
-            <name>In Project Repo</name>
-            <url>file://${project.basedir}/libs</url>
+            <id>project.local</id>
+            <name>project</name>
+            <url>file:${project.basedir}/repo</url>
         </repository>
     </repositories>
     <build>
