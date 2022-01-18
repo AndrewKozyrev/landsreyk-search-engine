@@ -200,6 +200,9 @@ public class SearchClient {
             return Collections.emptyList();
         }
         Set<Page> pages = mapToPages(words);
+        if (pages.isEmpty()) {
+            return Collections.emptyList();
+        }
         return mapToMatchedPages(words, pages);
     }
 
