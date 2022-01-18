@@ -61,7 +61,7 @@ public class SearchClient {
         if (token.contains("|")) {
             token = token.split("\\|")[0];
         }
-        token = token.substring(0, token.length() / 2 + 1);
+        token = token.substring(0, token.length() / 2);
         while (true) {
             int i = content.indexOf(token);
             if (i == -1) {
